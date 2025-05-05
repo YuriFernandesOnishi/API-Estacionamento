@@ -1,22 +1,23 @@
 package com.yuri.estacionamento.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import jakarta.persistence.*;
 
-@Setter
-@Getter
+@Data
 @Entity
-@Table(name = "privilege") // Ajuste do nome da tabela
+@Table(name = "privilege") // Alinha com o nome da tabela no banco
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id; // Deve corresponder ao tipo INT UNSIGNED
 
-    @Column(length = 20, nullable = false)
+    @Column(nullable = false, length = 20)
     private String name;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @Column(name = "privilege_level", nullable = false, unique = true)
-    private int privilegeLevel;
+    private Integer privilegeLevel;
 }

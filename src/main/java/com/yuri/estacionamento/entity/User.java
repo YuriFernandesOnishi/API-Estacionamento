@@ -12,7 +12,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
 
     @Column(nullable = false, length = 60)
     private String name;
@@ -24,7 +24,7 @@ public class User {
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "privilege_id", nullable = false)
+    @JoinColumn(name = "privilege_id", nullable = false) // Relacionando à tabela privilege
     private Role role;
 
     @Column(name = "is_active", nullable = false)
