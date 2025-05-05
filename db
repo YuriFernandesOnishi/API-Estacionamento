@@ -1,0 +1,73 @@
+CREATE DATABASE IF NOT EXISTS dbgaragem;
+USE dbgaragem;
+
+SET sql_mode = 'STRICT_ALL_TABLES';
+
+CREATE TABLE privilege (
+                           id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY ,
+                           name VARCHAR(20) NOT NULL ,
+                           description TEXT,
+                           privilege_level INT NOT NULL UNIQUE
+);
+
+CREATE TABLE user (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL ,
+    name VARCHAR(60) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE ,
+    password_hash CHAR (20) NOT NULL,
+    privilege_id INT UNSIGNED NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
+    updated_at TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    FOREIGN KEY (privilege_id) REFERENCES privilege(id)
+);
+
+INSERT INTO privilege (name, description, privilege_level) VALUES
+
+    ('Administrador', 'Acesso total ao sistema', 100),
+    ('Gerente', 'Acesso a todas as funções operacionais e relatórios', 80),
+    ('Supervisor', 'Acesso a funções departamentais e relatórios limitados', 60),
+    ('Operador', 'Acesso básico para inserção de dados e funções operacionais', 40),
+    ('Assistente', 'Acesso mínimo para consultas e tarefas específicas', 20);
+
+CREATE TABLE system_settings (
+    id INT PRIMARY KEY DEFAULT 1,
+    max_spots INT NOT NULL DEFAULT 30 ,
+    first_hour_price DECIMAL(10,2) NOT NULL,
+    additional_hour_price DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
+    updated_at TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    updated_by INT UNSIGNED,
+    FOREIGN KEY (updated_by) REFERENCES user(id)
+);
+
+CREATE TABLE parking_spot (
+                              id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                              spot_number VARCHAR(10) NOT NULL UNIQUE,
+                              is_available BOOLEAN NOT NULL DEFAULT TRUE,
+                              created_at TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)
+);
+
+INSERT INTO parking_spot (spot_number) VALUES
+    ('A01'), ('A02'), ('A03'), ('A04'), ('A05'),
+    ('B01'), ('B02'), ('B03'), ('B04'), ('B05'),
+    ('C01'), ('C02'), ('C03'), ('C04'), ('C05'),
+    ('D01'), ('D02'), ('D03'), ('D04'), ('D05'),
+    ('E01'), ('E02'), ('E03'), ('E04'), ('E05'),
+    ('F01'), ('F02'), ('F03'), ('F04'), ('F05');
+
+
+CREATE TABLE parking (
+                         id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                         owner_name VARCHAR(60) NOT NULL,
+                         license_plate VARCHAR(10) NOT NULL,
+                         entry_time TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
+                         exit_time TIMESTAMP NULL,
+                         amount_paid DECIMAL(10,2) NULL,
+                         payment_method ENUM('cash', 'card', 'pix','credit') NULL,
+                         spot_id INT UNSIGNED NOT NULL,
+                         user_id INT UNSIGNED NOT NULL,
+                         FOREIGN KEY (spot_id) REFERENCES parking_spot(id),
+                         FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
