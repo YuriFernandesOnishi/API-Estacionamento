@@ -11,36 +11,34 @@ import java.util.Date;
 @Component
 public class JwtTokenUtility {
 
-    // Substitua por uma chave segura e com pelo menos 256 bits
-    private static final String SECRET_KEY = "sua_chave_secreta_segura_com_256_bits_________";
+    private static final String SECRET_KEY = "6rr46ZekBjgivfRG6jJxmGyVnfK0SuaSAlEGY4ojCyc=";
 
-    // Método para obter a chave com base no SECRET_KEY
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY); // Decodifica a chave
-        return Keys.hmacShaKeyFor(keyBytes); // Gera a chave HMAC com base no tamanho necessário
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String generateToken(String email) {
         return Jwts.builder()
-                .setSubject(email) // Define o "dono" do token como o email solicitado
-                .setIssuedAt(new Date()) // Data de emissão do token
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Expira em 10h
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Gera o token com a chave e alg.
-                .compact(); // Compila o Token
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public String extractEmail(String token) {
-        return Jwts.parserBuilder() // Novo parser compatível com JWT moderno
-                .setSigningKey(getSigningKey()) // Define a chave de assinatura
-                .build() // Constrói a instância do parser
-                .parseClaimsJws(token) // Faz o parsing do Token JWT
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
                 .getBody()
-                .getSubject(); // Extrai o "subject" (neste caso, o email)
+                .getSubject();
     }
 
     public boolean validateToken(String token, String email) {
-        String extractedEmail = extractEmail(token); // Extrai o email do token
-        return (extractedEmail.equals(email) && !isTokenExpired(token)); // Compara email e validade
+        String extractedEmail = extractEmail(token);
+        return (extractedEmail.equals(email) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {
@@ -50,6 +48,6 @@ public class JwtTokenUtility {
                 .parseClaimsJws(token)
                 .getBody()
                 .getExpiration();
-        return expiration.before(new Date()); // Verifica se a data de expiração já passou
+        return expiration.before(new Date());
     }
 }

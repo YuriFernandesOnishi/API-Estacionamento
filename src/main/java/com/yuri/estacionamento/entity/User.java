@@ -14,13 +14,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 60)
+    @Column(nullable = false, length = 60) // Nome do usuário
     private String name;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "password_hash", nullable = false) // Alinha com o nome do campo na tabela
     private String password;
 
-    @Column(nullable = false, length = 255, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,5 +29,4 @@ public class User {
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
-
 }
