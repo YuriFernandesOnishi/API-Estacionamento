@@ -1,9 +1,13 @@
 package com.yuri.estacionamento.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "user", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"email"})
@@ -23,10 +27,13 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "privilege_id", nullable = false) // Relacionando à tabela privilege
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "privilege_id", nullable = false)
     private Role role;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
+
+    @OneToMany(mappedBy = "handler")
+    private List<ParkingRecord> parkingRecords = new ArrayList<>();
 }

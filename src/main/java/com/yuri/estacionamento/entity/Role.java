@@ -10,7 +10,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id; // Deve corresponder ao tipo INT UNSIGNED
+    private Integer id;
 
     @Column(nullable = false, length = 20)
     private String name;
