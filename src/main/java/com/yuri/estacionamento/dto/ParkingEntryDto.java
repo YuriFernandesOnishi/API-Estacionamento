@@ -22,7 +22,6 @@ public class ParkingEntryDto {
     @NotBlank(message = "O número da vaga deve ser informado.")
     private String spotNumber;
 
-    @NotNull(message = "O horário de entrada é obrigatório.")
     private Date entryTime;
 
     @NotNull(message = "O ID do usuário responsável é obrigatório.")

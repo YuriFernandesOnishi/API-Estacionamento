@@ -23,7 +23,7 @@ public class ParkingRecord {
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle; // Relacionamento com a tabela de veículos
 
-    @Column(name = "entry_time", nullable = false)
+    @Column(name = "entry_time", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
     @Temporal(TemporalType.TIMESTAMP)
     private Date entryTime;
 
