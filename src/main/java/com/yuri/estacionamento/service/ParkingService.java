@@ -64,6 +64,8 @@ public class ParkingService {
         // Criar novo registro de estacionamento
         ParkingRecord parkingRecord = new ParkingRecord();
         parkingRecord.setVehicle(vehicle);
+        parkingRecord.setOwnerName(vehicle.getOwnerName());
+        parkingRecord.setLicensePlate(vehicle.getLicensePlate());
         parkingRecord.setHandler(user);
         parkingRecord.setLocation(location);
 

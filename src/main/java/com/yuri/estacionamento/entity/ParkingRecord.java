@@ -45,4 +45,11 @@ public class ParkingRecord {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User handler;
+
+    @Column(name = "owner_name", nullable = false, length = 60)
+    private String ownerName;
+
+    @Column(name = "license_plate", nullable = false, length = 7)
+    private String licensePlate;
+
 }
